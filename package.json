@@ -1,0 +1,16 @@
+{
+  "name": "20200123_ipynb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "hbp-seafile": "0.0.7",
+    "open": "^7.0.0"
+  }
+}
