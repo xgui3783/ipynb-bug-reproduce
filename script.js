@@ -6,7 +6,7 @@ const token = process.env.ACCESS_TOKEN || 'ey...'
 
 const DIR = `/${Date.now().toString()}-jupyterhub-bug-repro/`
 
-const HBP_COLLAB_HOST = process.env.HBP_COLLAB_HOST || `https://jupyterhub-preview.apps-dev.hbp.eu`
+const HBP_COLLAB_HOST = process.env.HBP_COLLAB_HOST || `https://lab.ebrains.eu`
 const HBP_COLLAB_PATH = process.env.HBP_COLLAB_PATH || '/hub/user-redirect/lab/tree/drive/My%20Libraries/My%20Library'
 
 const handle = new Seafile({ accessToken: token })
