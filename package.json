@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hbp-seafile": "0.0.7",
+    "hbp-seafile": "^0.2.2",
     "open": "^7.0.0"
   }
 }

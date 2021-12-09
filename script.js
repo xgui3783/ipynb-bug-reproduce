@@ -4,7 +4,7 @@ const open = require('open')
 
 const token = process.env.ACCESS_TOKEN || 'ey...'
 
-const DIR = `/${Date.now().toString()}-jupyterhub-bug-repro/`
+const DIR = `/bla-${Date.now().toString()}-jupyterhub-bug-repro/`
 
 const HBP_COLLAB_HOST = process.env.HBP_COLLAB_HOST || `https://lab.ebrains.eu`
 const HBP_COLLAB_PATH = process.env.HBP_COLLAB_PATH || '/hub/user-redirect/lab/tree/drive/My%20Libraries/My%20Library'
@@ -33,9 +33,9 @@ const main = async () => {
       "metadata": {},
       "outputs": [],
       "source": [
-       "from pyjugex import PyjugexAnalysis\n",
-       "import nibabel as nib\n",
-       "import pyjugex\n",
+       "from pyjugex import PyjugexAnalysis\\n",
+       "import nibabel as nib\\n",
+       "import pyjugex\\n",
        "pmap_service_url='$$PMAP_SERVICE_URL$$'"
       ]
      },
@@ -45,7 +45,7 @@ const main = async () => {
       "metadata": {},
       "outputs": [],
       "source": [
-       "roi1_fname = 'roi1.nii.gz'\n",
+       "roi1_fname = 'roi1.nii.gz'\\n",
        "roi2_fname = 'roi2.nii.gz'"
       ]
      },
@@ -54,11 +54,11 @@ const main = async () => {
       "metadata": {},
       "outputs": [],
       "source": [
-       "hoc1_body = {\n",
-       "  \"areas\": $$AREA1$$,\n",
-       "  \"threshold\": 0.2\n",
-       "}\n",
-       "with pyjugex.util.get_pmap(url=f'{pmap_service_url}/multimerge_v2', json=hoc1_body) as resp, open(f'./{roi1_fname}', 'wb') as out_file:\n",
+       "hoc1_body = {\\n",
+       "  \\"areas\\": $$AREA1$$,\\n",
+       "  \\"threshold\\": 0.2\\n",
+       "}\\n",
+       "with pyjugex.util.get_pmap(url=f'{pmap_service_url}/multimerge_v2', json=hoc1_body) as resp, open(f'./{roi1_fname}', 'wb') as out_file:\\n",
        "    out_file.write(resp.content)"
       ]
      },
@@ -67,11 +67,11 @@ const main = async () => {
       "metadata": {},
       "outputs": [],
       "source": [
-       "hoc2_body = {\n",
-       "  \"areas\": $$AREA2$$,\n",
-       "  \"threshold\": 0.2\n",
-       "}\n",
-       "with pyjugex.util.get_pmap(url=f'{pmap_service_url}/multimerge_v2', json=hoc2_body) as resp, open(f'./{roi2_fname}', 'wb') as out_file:\n",
+       "hoc2_body = {\\n",
+       "  \\"areas\\": $$AREA2$$,\\n",
+       "  \\"threshold\\": 0.2\\n",
+       "}\\n",
+       "with pyjugex.util.get_pmap(url=f'{pmap_service_url}/multimerge_v2', json=hoc2_body) as resp, open(f'./{roi2_fname}', 'wb') as out_file:\\n",
        "    out_file.write(resp.content)"
       ]
      },
@@ -80,10 +80,10 @@ const main = async () => {
       "metadata": {},
       "outputs": [],
       "source": [
-       "hoc1_nii = nib.load(f'./{roi1_fname}')\n",
-       "hoc2_nii = nib.load(f'./{roi2_fname}')\n",
-       "\n",
-       "gene_list=$$GENELIST$$\n",
+       "hoc1_nii = nib.load(f'./{roi1_fname}')\\n",
+       "hoc2_nii = nib.load(f'./{roi2_fname}')\\n",
+       "\\n",
+       "gene_list=$$GENELIST$$\\n",
        "n_rep = 1000"
       ]
      },
@@ -92,11 +92,11 @@ const main = async () => {
       "metadata": {},
       "outputs": [],
       "source": [
-       "analysis = PyjugexAnalysis(\n",
-       "  n_rep=1000,\n",
-       "  gene_list=gene_list,\n",
-       "  roi1 = hoc1_nii,\n",
-       "  roi2 = hoc2_nii\n",
+       "analysis = PyjugexAnalysis(\\n",
+       "  n_rep=1000,\\n",
+       "  gene_list=gene_list,\\n",
+       "  roi1 = hoc1_nii,\\n",
+       "  roi2 = hoc2_nii\\n",
        ")"
       ]
      },
@@ -145,15 +145,17 @@ const main = async () => {
   rStream.path = filename
   rStream.push(dataString)
   rStream.push(null)
-  await handle.uploadFile({ readStream: rStream, filename: filename }, { dir: DIR })
-
+  const upload = await handle.uploadFile({ readStream: rStream, filename: filename }, { dir: DIR })
+  console.log(upload)
   const sAgain = await handle.ls({ dir: DIR })
   console.log('check dir populated', { sAgain })
 
   const txt = await handle.readFile({ dir: `${DIR}${filename}` })
   console.log('check file', { txt })
 
-  open(`${HBP_COLLAB_HOST}${HBP_COLLAB_PATH}${encodeURIComponent(DIR)}${encodeURIComponent(filename)}`)
+  const url = `${HBP_COLLAB_HOST}${HBP_COLLAB_PATH}${encodeURIComponent(DIR)}${encodeURIComponent(filename)}`
+  console.log(url)
+  open(url)
 }
 
 main()
